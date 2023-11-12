@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    public float speed = 5f;
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float checkRadius = 0.2f;
+    [SerializeField] private float jumpForce = 2f;
     public Transform feet;
     public LayerMask groundLayer;
-    public float checkRadius = 0.2f;
-    public float jumpForce = 2f;
+    
     
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -30,7 +31,7 @@ public class playerController : MonoBehaviour
         if (Physics2D.OverlapCircle(feet.position, checkRadius, groundLayer))
         {
             isGrounded = true;
-        }
+        } 
         else
         {
             isGrounded = false;
