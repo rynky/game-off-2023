@@ -43,4 +43,38 @@ public class playerController : MonoBehaviour
             rb.velocity = Vector2.up * jumpForce;
         }
     }
+
+    public boxController selectedBox = null;
+
+    public void SelectBox(boxController box)
+    {
+        // There is no box currently selected
+        if (selectedBox == null)
+        {
+            box.Scale(true);
+            selectedBox = box;
+        } 
+        
+        // There is a box currently selected
+        else
+        {
+            // If it is the same box, deselect
+            if (selectedBox == box)
+            {
+                box.Scale(false);
+                selectedBox = null;
+            } 
+
+            // If it is a new box...
+            else
+            {
+                // De-select the previous box
+                selectedBox.Scale(false);
+
+                // Select the new box
+                box.Scale(true);
+                selectedBox = box;
+            }
+        }
+    }
 }
