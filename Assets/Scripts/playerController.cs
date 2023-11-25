@@ -10,9 +10,9 @@ public class playerController : MonoBehaviour
     public Transform feet;
     public LayerMask groundLayer;
     
-    
     private Rigidbody2D rb;
     private bool isGrounded;
+    public float scaleFactor = 1f;
 
     void Start()
     {
@@ -21,6 +21,7 @@ public class playerController : MonoBehaviour
 
     void Update()
     {
+
         // Horizontal Movement
         float xInput = Input.GetAxis("Horizontal");
 
