@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
@@ -7,8 +8,10 @@ public class playerController : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float checkRadius = 0.2f;
     [SerializeField] private float jumpForce = 2f;
+    private float xInput;
     public Transform feet;
     public LayerMask groundLayer;
+    private bool facingRight = true;
     
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -21,10 +24,10 @@ public class playerController : MonoBehaviour
 
     void Update()
     {
+        // Horizontal Input
+        xInput = Input.GetAxis("Horizontal");
 
-        // Horizontal Movement
-        float xInput = Input.GetAxis("Horizontal");
-
+        // Calculate Movement based on horizontal input
         Vector2 newMovementVector = new Vector2(xInput * speed, rb.velocity.y);
         rb.velocity = newMovementVector;
 
@@ -32,7 +35,7 @@ public class playerController : MonoBehaviour
         if (Physics2D.OverlapCircle(feet.position, checkRadius, groundLayer))
         {
             isGrounded = true;
-        } 
+        }
         else
         {
             isGrounded = false;
@@ -43,6 +46,18 @@ public class playerController : MonoBehaviour
         {
             rb.velocity = Vector2.up * jumpForce;
         }
+
+        // Flip character if facing the negative directionn
+        if (facingRight && xInput < 0) {
+            facingRight = false;
+            Flip();
+        } 
+        else if (!facingRight && xInput > 0)
+        {
+            facingRight = true;
+            Flip();
+        }
+
     }
 
     public boxController selectedBox = null;
@@ -77,5 +92,11 @@ public class playerController : MonoBehaviour
                 selectedBox = box;
             }
         }
+    }
+
+    private void Flip()
+    {      
+        // Flip the sprite to match the direction that it is travelling in
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 }
